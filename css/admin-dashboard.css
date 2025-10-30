@@ -347,6 +347,30 @@ body {
     margin-bottom: 15px;
 }
 
+.section-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.search-input {
+    width: 280px;
+    max-width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    color: #111827;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(147,197,253,0.4);
+}
+
 .event-details {
     background: #f9fafb;
     padding: 15px;
@@ -452,6 +476,13 @@ body {
     background: #f9fafb;
 }
 
+.registrations-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f9fafb;
+    z-index: 1;
+}
+
 .registrations-table th {
     padding: 12px;
     text-align: left;
@@ -468,6 +499,10 @@ body {
 
 .registrations-table tbody tr:hover {
     background: #f9fafb;
+}
+
+.registrations-table tbody tr:nth-child(odd) {
+    background: #fcfdff;
 }
 
 /* Loading & Error States */

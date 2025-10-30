@@ -74,6 +74,22 @@ function setupEventHandlers() {
       }
     });
   }
+
+  // Search filters
+  const searchUsersInput = document.getElementById('search-users');
+  const searchRegsInput = document.getElementById('search-registrations');
+
+  if (searchUsersInput) {
+    searchUsersInput.addEventListener('input', () => {
+      filterAndRenderUsers(searchUsersInput.value);
+    });
+  }
+
+  if (searchRegsInput) {
+    searchRegsInput.addEventListener('input', () => {
+      filterAndRenderRegistrations(searchRegsInput.value);
+    });
+  }
 }
 
 // Load all data
@@ -120,19 +136,8 @@ async function loadRegistrations() {
       return;
     }
 
-    // Display registrations table
-    registrationsTable.innerHTML = registrations.map((reg, index) => `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${reg.name || 'N/A'}</td>
-        <td>${reg.email || 'N/A'}</td>
-        <td>${reg.phone || 'N/A'}</td>
-        <td>${reg.college || 'N/A'}</td>
-        <td>${reg.eventId || EVENT_ID}</td>
-        <td>${formatRegistrationDate(reg)}</td>
-        <td>${reg.status || 'Registered'}</td>
-      </tr>
-    `).join('');
+    // Initial render
+    renderRegistrationsTable(currentRegistrations);
   } catch (error) {
     registrationsTable.innerHTML = `<tr><td colspan="8" class="error">Error loading registrations: ${error.message}</td></tr>`;
     console.error('Error loading registrations:', error);
@@ -249,27 +254,90 @@ async function loadUsers() {
       return;
     }
 
-    // Display users table
-    if (usersTable) {
-      usersTable.innerHTML = users.map((user, index) => `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            ${user.photoURL ? `<img src="${user.photoURL}" alt="${user.name || 'User'}" class="user-photo">` : '<span class="user-avatar">👤</span>'}
-          </td>
-          <td>${user.name || 'N/A'}</td>
-          <td>${user.email || 'N/A'}</td>
-          <td>${user.phone || 'N/A'}</td>
-          <td>${user.college || 'N/A'}</td>
-          <td>${user.createdAt ? formatDate(new Date(user.createdAt)) : 'N/A'}</td>
-          <td>${user.lastLogin ? formatDate(new Date(user.lastLogin)) : 'Never'}</td>
-        </tr>
-      `).join('');
-    }
+    // Initial render
+    renderUsersTable(users);
   } catch (error) {
     if (usersTable) {
       usersTable.innerHTML = `<tr><td colspan="8" class="error">Error loading users: ${error.message}</td></tr>`;
     }
     console.error('Error loading users:', error);
   }
+}
+
+// Helpers: filtering and rendering
+function normalize(str) {
+  return (str || '').toString().toLowerCase();
+}
+
+function renderUsersTable(users) {
+  const usersTable = document.getElementById('users-table');
+  if (!usersTable) return;
+  if (!users || users.length === 0) {
+    usersTable.innerHTML = '<tr><td colspan="8" class="no-data">No users found</td></tr>';
+    return;
+  }
+  usersTable.innerHTML = users.map((user, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td>
+        ${user.photoURL ? `<img src="${user.photoURL}" alt="${user.name || 'User'}" class="user-photo">` : '<span class="user-avatar">👤</span>'}
+      </td>
+      <td>${user.name || 'N/A'}</td>
+      <td>${user.email || 'N/A'}</td>
+      <td>${user.phone || 'N/A'}</td>
+      <td>${user.college || 'N/A'}</td>
+      <td>${user.createdAt ? formatDate(new Date(user.createdAt)) : 'N/A'}</td>
+      <td>${user.lastLogin ? formatDate(new Date(user.lastLogin)) : 'Never'}</td>
+    </tr>
+  `).join('');
+}
+
+function renderRegistrationsTable(registrations) {
+  const registrationsTable = document.getElementById('registrations-table');
+  if (!registrationsTable) return;
+  if (!registrations || registrations.length === 0) {
+    registrationsTable.innerHTML = '<tr><td colspan="8" class="no-data">No registrations found</td></tr>';
+    return;
+  }
+  registrationsTable.innerHTML = registrations.map((reg, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td>${reg.name || 'N/A'}</td>
+      <td>${reg.email || 'N/A'}</td>
+      <td>${reg.phone || 'N/A'}</td>
+      <td>${reg.college || 'N/A'}</td>
+      <td>${reg.eventId || EVENT_ID}</td>
+      <td>${formatRegistrationDate(reg)}</td>
+      <td>${reg.status || 'Registered'}</td>
+    </tr>
+  `).join('');
+}
+
+function filterAndRenderUsers(query) {
+  const q = normalize(query);
+  if (!q) {
+    return renderUsersTable(currentUsers);
+  }
+  const filtered = currentUsers.filter(u => {
+    return normalize(u.name).includes(q) ||
+           normalize(u.email).includes(q) ||
+           normalize(u.college).includes(q) ||
+           normalize(u.phone).includes(q);
+  });
+  renderUsersTable(filtered);
+}
+
+function filterAndRenderRegistrations(query) {
+  const q = normalize(query);
+  if (!q) {
+    return renderRegistrationsTable(currentRegistrations);
+  }
+  const filtered = currentRegistrations.filter(r => {
+    return normalize(r.name).includes(q) ||
+           normalize(r.email).includes(q) ||
+           normalize(r.college).includes(q) ||
+           normalize(r.phone).includes(q) ||
+           normalize(r.status).includes(q);
+  });
+  renderRegistrationsTable(filtered);
 }
