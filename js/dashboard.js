@@ -90,6 +90,23 @@ function setupEventHandlers() {
       filterAndRenderRegistrations(searchRegsInput.value);
     });
   }
+
+  // Tabs switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  if (tabs && tabs.length) {
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-target');
+        if (!target) return;
+        switchTab(target);
+      });
+    });
+    // On load, open hash tab if present
+    const initial = (location.hash || '#overview').replace('#', '');
+    const map = { overview: 'tab-overview', users: 'tab-users', registrations: 'tab-registrations' };
+    const targetId = map[initial] || 'tab-overview';
+    switchTab(targetId);
+  }
 }
 
 // Load all data
@@ -119,9 +136,15 @@ async function loadEventInfo() {
   }
 }
 
+function getScoped(selector, fallbackId) {
+  const el = document.querySelector(selector);
+  if (el) return el;
+  return document.getElementById(fallbackId) || null;
+}
+
 // Load registrations
 async function loadRegistrations() {
-  const registrationsTable = document.getElementById('registrations-table');
+  const registrationsTable = getScoped('#tab-registrations #registrations-table', 'registrations-table');
   
   if (!registrationsTable) return;
 
@@ -130,6 +153,9 @@ async function loadRegistrations() {
   try {
     const registrations = await getEventRegistrations(EVENT_ID);
     currentRegistrations = registrations;
+    const regBadge = document.getElementById('count-registrations');
+    if (regBadge) regBadge.textContent = registrations.length;
+    console.log('[Registrations] Loaded count:', registrations.length);
 
     if (registrations.length === 0) {
       registrationsTable.innerHTML = '<tr><td colspan="8" class="no-data">No registrations found for this event</td></tr>';
@@ -201,7 +227,7 @@ async function loadStats() {
 
 // Load users
 async function loadUsers() {
-  const usersTable = document.getElementById('users-table');
+  const usersTable = getScoped('#tab-users #users-table', 'users-table');
   const usersStatsContainer = document.getElementById('users-stats');
   
   if (usersTable) {
@@ -211,6 +237,9 @@ async function loadUsers() {
   try {
     const users = await getAllUsers();
     currentUsers = users;
+    const usersBadge = document.getElementById('count-users');
+    if (usersBadge) usersBadge.textContent = users.length;
+    console.log('[Users] Loaded count:', users.length);
 
     // Sort by createdAt (newest first)
     users.sort((a, b) => {
@@ -270,47 +299,122 @@ function normalize(str) {
 }
 
 function renderUsersTable(users) {
-  const usersTable = document.getElementById('users-table');
+  const usersTable = getScoped('#tab-users #users-table', 'users-table');
   if (!usersTable) return;
+  usersTable.innerHTML = '';
   if (!users || users.length === 0) {
     usersTable.innerHTML = '<tr><td colspan="8" class="no-data">No users found</td></tr>';
     return;
   }
-  usersTable.innerHTML = users.map((user, index) => `
-    <tr>
-      <td>${index + 1}</td>
-      <td>
-        ${user.photoURL ? `<img src="${user.photoURL}" alt="${user.name || 'User'}" class="user-photo">` : '<span class="user-avatar">👤</span>'}
-      </td>
-      <td>${user.name || 'N/A'}</td>
-      <td>${user.email || 'N/A'}</td>
-      <td>${user.phone || 'N/A'}</td>
-      <td>${user.college || 'N/A'}</td>
-      <td>${user.createdAt ? formatDate(new Date(user.createdAt)) : 'N/A'}</td>
-      <td>${user.lastLogin ? formatDate(new Date(user.lastLogin)) : 'Never'}</td>
-    </tr>
-  `).join('');
+  const frag = document.createDocumentFragment();
+  users.forEach((user, index) => {
+    const tr = document.createElement('tr');
+    const cells = [
+      index + 1,
+      null, // photo cell handled separately
+      user.name || 'N/A',
+      user.email || 'N/A',
+      user.phone || 'N/A',
+      user.college || 'N/A',
+      user.createdAt ? formatDate(new Date(user.createdAt)) : 'N/A',
+      user.lastLogin ? formatDate(new Date(user.lastLogin)) : 'Never'
+    ];
+
+    // index
+    let td = document.createElement('td');
+    td.textContent = String(cells[0]);
+    tr.appendChild(td);
+
+    // photo
+    td = document.createElement('td');
+    if (user.photoURL) {
+      const img = document.createElement('img');
+      img.src = user.photoURL;
+      img.alt = user.name || 'User';
+      img.className = 'user-photo';
+      td.appendChild(img);
+    } else {
+      const span = document.createElement('span');
+      span.className = 'user-avatar';
+      span.textContent = '👤';
+      td.appendChild(span);
+    }
+    tr.appendChild(td);
+
+    // remaining cells
+    for (let i = 2; i < cells.length; i++) {
+      const ctd = document.createElement('td');
+      ctd.textContent = String(cells[i]);
+      tr.appendChild(ctd);
+    }
+
+    frag.appendChild(tr);
+  });
+  usersTable.appendChild(frag);
+  console.log('[Users] Rendered rows:', usersTable.children.length);
+
+  // Fallback: ensure visible/painted
+  const uwrapper = usersTable.closest('.table-wrapper');
+  if (uwrapper) {
+    const h1 = uwrapper.scrollHeight;
+    const h2 = usersTable.offsetHeight;
+    if (h1 === 0 || h2 === 0) {
+      uwrapper.style.overflowY = 'visible';
+      usersTable.style.display = 'table-row-group';
+      usersTable.style.visibility = 'visible';
+      requestAnimationFrame(() => {
+        usersTable.appendChild(document.createComment('repaint'));
+      });
+    }
+  }
 }
 
 function renderRegistrationsTable(registrations) {
-  const registrationsTable = document.getElementById('registrations-table');
+  const registrationsTable = getScoped('#tab-registrations #registrations-table', 'registrations-table');
   if (!registrationsTable) return;
+  registrationsTable.innerHTML = '';
   if (!registrations || registrations.length === 0) {
     registrationsTable.innerHTML = '<tr><td colspan="8" class="no-data">No registrations found</td></tr>';
     return;
   }
-  registrationsTable.innerHTML = registrations.map((reg, index) => `
-    <tr>
-      <td>${index + 1}</td>
-      <td>${reg.name || 'N/A'}</td>
-      <td>${reg.email || 'N/A'}</td>
-      <td>${reg.phone || 'N/A'}</td>
-      <td>${reg.college || 'N/A'}</td>
-      <td>${reg.eventId || EVENT_ID}</td>
-      <td>${formatRegistrationDate(reg)}</td>
-      <td>${reg.status || 'Registered'}</td>
-    </tr>
-  `).join('');
+  const frag = document.createDocumentFragment();
+  registrations.forEach((reg, index) => {
+    const tr = document.createElement('tr');
+    const cells = [
+      index + 1,
+      reg.name || 'N/A',
+      reg.email || 'N/A',
+      reg.phone || 'N/A',
+      reg.college || 'N/A',
+      reg.eventId || EVENT_ID,
+      formatRegistrationDate(reg),
+      reg.status || 'Registered'
+    ];
+
+    cells.forEach(val => {
+      const td = document.createElement('td');
+      td.textContent = String(val);
+      tr.appendChild(td);
+    });
+    frag.appendChild(tr);
+  });
+  registrationsTable.appendChild(frag);
+  console.log('[Registrations] Rendered rows:', registrationsTable.children.length);
+
+  // Fallback: ensure visible/painted
+  const wrapper = registrationsTable.closest('.table-wrapper');
+  if (wrapper) {
+    const h1 = wrapper.scrollHeight;
+    const h2 = registrationsTable.offsetHeight;
+    if (h1 === 0 || h2 === 0) {
+      wrapper.style.overflowY = 'visible';
+      registrationsTable.style.display = 'table-row-group';
+      registrationsTable.style.visibility = 'visible';
+      requestAnimationFrame(() => {
+        registrationsTable.appendChild(document.createComment('repaint'));
+      });
+    }
+  }
 }
 
 function filterAndRenderUsers(query) {
@@ -340,4 +444,40 @@ function filterAndRenderRegistrations(query) {
            normalize(r.status).includes(q);
   });
   renderRegistrationsTable(filtered);
+}
+
+function switchTab(targetId) {
+  const groups = document.querySelectorAll('.section-group');
+  groups.forEach(g => { g.style.display = (g.id === targetId) ? 'block' : 'none'; });
+
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(t => {
+    if (t.getAttribute('data-target') === targetId) {
+      t.classList.add('active');
+    } else {
+      t.classList.remove('active');
+    }
+  });
+
+  // Update hash for deep links
+  const rev = { 'tab-overview': '#overview', 'tab-users': '#users', 'tab-registrations': '#registrations' };
+  const newHash = rev[targetId] || '#overview';
+  if (location.hash !== newHash) {
+    history.replaceState(null, '', newHash);
+  }
+
+  // Ensure content renders when switching
+  if (targetId === 'tab-registrations') {
+    if (currentRegistrations && currentRegistrations.length) {
+      renderRegistrationsTable(currentRegistrations);
+    } else {
+      loadRegistrations();
+    }
+  } else if (targetId === 'tab-users') {
+    if (currentUsers && currentUsers.length) {
+      renderUsersTable(currentUsers);
+    } else {
+      loadUsers();
+    }
+  }
 }
