@@ -8,7 +8,17 @@
 # Direct /admin to dashboard (client-side auth still enforced)
 [[redirects]]
   from = "/admin"
-  to = "/admin-dashboard.html"
+  to = "/admin-users.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/users"
+  to = "/admin-users.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/registrations"
+  to = "/admin-registrations.html"
   status = 200
 
 # Basic security headers

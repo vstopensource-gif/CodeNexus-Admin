@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin • Registrations</title>
+  <link rel="stylesheet" href="css/admin-dashboard.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="header-title">
+          <h1>Code-Nexus Admin Dashboard</h1>
+          <p class="header-subtitle">Registration Management</p>
+        </div>
+        <div class="header-actions">
+          <div class="admin-info">
+            <span class="admin-avatar">👤</span>
+            <span id="admin-name">Admin</span>
+          </div>
+          <button id="logout-btn" class="btn-logout">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <section class="dashboard-content">
+        <div class="page-nav">
+          <a href="admin-dashboard.html" class="nav-link">📊 Overview</a>
+          <a href="admin-users.html" class="nav-link">👥 Users</a>
+          <a href="admin-registrations.html" class="nav-link active">📝 Registrations</a>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Registrations</h3>
+            <div class="section-actions">
+              <input id="search-registrations" type="text" class="search-input" placeholder="Search by name, email, phone, or college...">
+            </div>
+            <div class="export-buttons">
+              <button id="refresh-registrations" class="btn-refresh" title="Refresh data (clears cache)">🔄 Refresh</button>
+              <button id="export-csv" class="btn-export">Export CSV</button>
+              <button id="export-json" class="btn-export">Export JSON</button>
+            </div>
+          </div>
+
+          <div class="registrations-container">
+            <div class="table-wrapper">
+              <table class="registrations-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>College</th>
+                  </tr>
+                </thead>
+                <tbody id="registrations-table">
+                  <tr><td colspan="5" class="loading">Loading registrations...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { requireAdmin, signOut } from './js/auth-guard.js';
+    import './js/registrations-page.js';
+
+    requireAdmin().then((user) => {
+      const nameEl = document.getElementById('admin-name');
+      if (nameEl) nameEl.textContent = user.displayName || user.email;
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) logoutBtn.addEventListener('click', signOut);
+    });
+  </script>
+</body>
+</html>
+
+
