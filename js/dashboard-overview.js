@@ -144,4 +144,17 @@ function updateElement(id, text) {
   if (el) el.textContent = text;
 }
 
-document.addEventListener('DOMContentLoaded', loadOverviewStats);
+// Setup refresh button
+document.addEventListener('DOMContentLoaded', () => {
+  loadOverviewStats();
+  
+  const refreshBtn = document.getElementById('refresh-overview');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      clearCache(CACHE_KEYS.OVERVIEW);
+      clearCache(CACHE_KEYS.USERS);
+      clearCache(CACHE_KEYS.REGISTRATIONS);
+      loadOverviewStats();
+    });
+  }
+});

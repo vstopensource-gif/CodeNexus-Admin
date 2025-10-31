@@ -41,6 +41,9 @@
             </div>
             <div class="export-buttons">
               <button id="refresh-registrations" class="btn-refresh" title="Refresh data (clears cache)">🔄 Refresh</button>
+              <button id="send-seminar-email" class="btn-email" title="Send seminar email to all registrations">📧 Send Seminar Email</button>
+              <button id="bulk-mark-sent-reg" class="btn-export" style="display: none;" title="Mark selected as sent">✓ Mark Selected as Sent</button>
+              <button id="bulk-mark-unsent-reg" class="btn-export" style="display: none; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);" title="Mark selected as not sent">✗ Mark Selected as Unsent</button>
               <button id="export-csv" class="btn-export">Export CSV</button>
               <button id="export-json" class="btn-export">Export JSON</button>
             </div>
@@ -51,15 +54,18 @@
               <table class="registrations-table">
                 <thead>
                   <tr>
+                    <th style="width: 40px;"><input type="checkbox" id="select-all-registrations" title="Select all"></th>
                     <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>College</th>
+                    <th>Seminar Email</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody id="registrations-table">
-                  <tr><td colspan="5" class="loading">Loading registrations...</td></tr>
+                  <tr><td colspan="8" class="loading">Loading registrations...</td></tr>
                 </tbody>
               </table>
             </div>

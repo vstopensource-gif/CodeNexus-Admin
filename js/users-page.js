@@ -2,6 +2,8 @@ import { db } from './firebase-app.js';
 import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 import { formatDate, exportToCSV, exportToJSON } from './shared-ui.js';
 import { getCachedData, setCachedData, clearCache, CACHE_KEYS } from './cache-manager.js';
+import { generateWelcomeEmail, openEmailComposer, createIndividualEmailLink } from './email-templates.js';
+import { updateWelcomeEmailStatus, bulkUpdateWelcomeEmailStatus, showStatusToggleWarning } from './email-status-manager.js';
 
 let allUsers = [];
 
@@ -10,7 +12,7 @@ async function loadUsers() {
   const stats = document.getElementById('users-stats');
   if (!tbody) return;
   
-  tbody.innerHTML = '<tr><td colspan="5" class="loading">Loading users...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="loading">Loading users...</td></tr>';
 
   try {
     // Check cache first
@@ -105,9 +107,116 @@ async function loadUsers() {
       };
     }
 
+    // Bulk welcome email button
+    const emailBtn = document.getElementById('send-welcome-email');
+    if (emailBtn) {
+      emailBtn.onclick = () => {
+        const validUsers = allUsers.filter(u => u.email && u.email !== 'N/A' && u.email.includes('@'));
+        if (validUsers.length === 0) {
+          alert('No valid email addresses found.');
+          return;
+        }
+        const subject = 'Welcome to Code Nexus!';
+        // Open email type selector (personalized or BCC)
+        openEmailComposer([], subject, '', false, validUsers, generateWelcomeEmail);
+      };
+    }
+
+    // Setup bulk actions
+    setupBulkActions();
+
   } catch (e) {
     console.error('[Users] Error:', e);
-    tbody.innerHTML = `<tr><td colspan="5" class="error">Error: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="error">Error: ${e.message}</td></tr>`;
+  }
+}
+
+function setupBulkActions() {
+  const selectAll = document.getElementById('select-all-users');
+  const bulkMarkSent = document.getElementById('bulk-mark-sent');
+  const bulkMarkUnsent = document.getElementById('bulk-mark-unsent');
+  
+  if (selectAll) {
+    selectAll.addEventListener('change', (e) => {
+      const checkboxes = document.querySelectorAll('#users-table input[type="checkbox"][data-user-id]');
+      checkboxes.forEach(cb => cb.checked = e.target.checked);
+      updateBulkButtons();
+    });
+  }
+  
+  if (bulkMarkSent) {
+    bulkMarkSent.addEventListener('click', async () => {
+      const selected = getSelectedUserIds();
+      if (selected.length === 0) {
+        alert('Please select at least one user.');
+        return;
+      }
+      
+      const confirmed = await showStatusToggleWarning(false, 'welcome', null, selected.length);
+      if (!confirmed) return;
+      
+      try {
+        bulkMarkSent.disabled = true;
+        bulkMarkSent.textContent = 'Updating...';
+        await bulkUpdateWelcomeEmailStatus(selected, true);
+        clearCache(CACHE_KEYS.USERS);
+        await loadUsers();
+        alert(`✓ Marked ${selected.length} user(s) as sent successfully!`);
+      } catch (error) {
+        console.error('[Users] Error bulk marking:', error);
+        alert('Error updating status. Please try again.');
+      } finally {
+        bulkMarkSent.disabled = false;
+        bulkMarkSent.textContent = '✓ Mark Selected as Sent';
+      }
+    });
+  }
+  
+  if (bulkMarkUnsent) {
+    bulkMarkUnsent.addEventListener('click', async () => {
+      const selected = getSelectedUserIds();
+      if (selected.length === 0) {
+        alert('Please select at least one user.');
+        return;
+      }
+      
+      const confirmed = await showStatusToggleWarning(true, 'welcome', null, selected.length);
+      if (!confirmed) return;
+      
+      try {
+        bulkMarkUnsent.disabled = true;
+        bulkMarkUnsent.textContent = 'Updating...';
+        await bulkUpdateWelcomeEmailStatus(selected, false);
+        clearCache(CACHE_KEYS.USERS);
+        await loadUsers();
+        alert(`✓ Marked ${selected.length} user(s) as unsent successfully!`);
+      } catch (error) {
+        console.error('[Users] Error bulk marking:', error);
+        alert('Error updating status. Please try again.');
+      } finally {
+        bulkMarkUnsent.disabled = false;
+        bulkMarkUnsent.textContent = '✗ Mark Selected as Unsent';
+      }
+    });
+  }
+}
+
+function getSelectedUserIds() {
+  const checkboxes = document.querySelectorAll('#users-table input[type="checkbox"][data-user-id]:checked');
+  return Array.from(checkboxes).map(cb => cb.dataset.userId);
+}
+
+function updateBulkButtons() {
+  const selected = getSelectedUserIds();
+  const bulkMarkSent = document.getElementById('bulk-mark-sent');
+  const bulkMarkUnsent = document.getElementById('bulk-mark-unsent');
+  
+  if (selected.length > 0) {
+    if (bulkMarkSent) bulkMarkSent.style.display = 'inline-block';
+    if (bulkMarkUnsent) bulkMarkUnsent.style.display = 'inline-block';
+  } else {
+    if (bulkMarkSent) bulkMarkSent.style.display = 'none';
+    if (bulkMarkUnsent) bulkMarkUnsent.style.display = 'none';
   }
 }
 
@@ -116,7 +225,7 @@ function renderUsersTable(users) {
   if (!tbody) return;
 
   if (users.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="no-data">No users found</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="no-data">No users found</td></tr>';
     return;
   }
 
@@ -126,6 +235,16 @@ function renderUsersTable(users) {
 
   users.forEach((u, index) => {
     const tr = document.createElement('tr');
+    tr.dataset.userId = u.id;
+
+    // Checkbox column
+    const checkboxTd = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.userId = u.id;
+    checkbox.addEventListener('change', updateBulkButtons);
+    checkboxTd.appendChild(checkbox);
+    tr.appendChild(checkboxTd);
 
     // Row number
     const numTd = document.createElement('td');
@@ -166,6 +285,66 @@ function renderUsersTable(users) {
     const collegeTd = document.createElement('td');
     collegeTd.textContent = u.college || 'N/A';
     tr.appendChild(collegeTd);
+
+    // Status column - Welcome Email Status
+    const statusTd = document.createElement('td');
+    const statusBadge = document.createElement('span');
+    const isSent = u.welcomeEmailSent === true;
+    statusBadge.className = `email-status-badge ${isSent ? 'sent' : 'unsent'}`;
+    statusBadge.textContent = isSent ? '✓ Sent' : '✗ Not Sent';
+    statusBadge.style.cursor = 'pointer';
+    statusBadge.title = `Click to mark as ${isSent ? 'NOT sent' : 'sent'}`;
+    statusBadge.addEventListener('click', async () => {
+      const confirmed = await showStatusToggleWarning(isSent, 'welcome', u.name || u.email, 1);
+      if (!confirmed) return;
+      
+      try {
+        statusBadge.style.opacity = '0.5';
+        await updateWelcomeEmailStatus(u.id, !isSent);
+        clearCache(CACHE_KEYS.USERS);
+        await loadUsers();
+      } catch (error) {
+        console.error('[Users] Error updating status:', error);
+        alert('Error updating status. Please try again.');
+        statusBadge.style.opacity = '1';
+      }
+    });
+    statusTd.appendChild(statusBadge);
+    tr.appendChild(statusTd);
+
+    // Action column - Email button
+    const actionTd = document.createElement('td');
+    if (u.email && u.email !== 'N/A') {
+      const emailBtn = document.createElement('a');
+      emailBtn.href = createIndividualEmailLink(
+        u.email,
+        'Welcome to Code Nexus!',
+        generateWelcomeEmail(u.name || '')
+      );
+      emailBtn.className = 'btn-email-row';
+      emailBtn.title = 'Send welcome email';
+      emailBtn.textContent = '📧';
+      emailBtn.target = '_blank';
+      
+      // Mark as sent when email is opened
+      emailBtn.addEventListener('click', async () => {
+        if (!u.welcomeEmailSent) {
+          try {
+            await updateWelcomeEmailStatus(u.id, true);
+            clearCache(CACHE_KEYS.USERS);
+            // Refresh after a delay to allow Gmail to open
+            setTimeout(() => loadUsers(), 1000);
+          } catch (error) {
+            console.error('[Users] Error marking as sent:', error);
+          }
+        }
+      });
+      
+      actionTd.appendChild(emailBtn);
+    } else {
+      actionTd.textContent = '-';
+    }
+    tr.appendChild(actionTd);
 
     frag.appendChild(tr);
   });
