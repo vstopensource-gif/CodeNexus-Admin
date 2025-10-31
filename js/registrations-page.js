@@ -114,7 +114,7 @@ async function loadRegistrations() {
           alert('No valid email addresses found.');
           return;
         }
-        const subject = 'Your GSoC Session Registration Confirmation';
+        const subject = '🎉 You’re Registered for the GSoC Session! Here’s Your Zoom Link 🔗';
         // Open email type selector (personalized or BCC)
         openEmailComposer([], subject, '', false, validRegs, generateSeminarEmail);
       };
@@ -324,7 +324,7 @@ function renderRegistrationsTable(registrations) {
       const emailBtn = document.createElement('a');
       emailBtn.href = createIndividualEmailLink(
         reg.email,
-        'Your GSoC Session Registration Confirmation',
+        '🎉 You’re Registered for the GSoC Session! Here’s Your Zoom Link 🔗',
         generateSeminarEmail(reg.name || '')
       );
       emailBtn.className = 'btn-email-row';

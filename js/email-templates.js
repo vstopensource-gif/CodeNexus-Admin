@@ -70,45 +70,53 @@ export function generateSeminarEmail(name) {
   
   return `${greeting}
 
-==============================
-🎓  GSoC SESSION REGISTRATION 🎓
-==============================
+🎉 Congratulations! You’ve successfully registered for our exclusive GSoC Session with Prathamesh Sahasrabhojane (GSoC 2020 Alumni, now at Rippling).
 
-${thankYou}
-
-Ever wondered what it takes to crack Google Summer of Code? Learn from someone who's done it!
-
-We're hosting an exclusive session with Prathamesh Sahasrabhojane - GSoC 2020 Alumni, currently building at Rippling.
-
-He will share:
-→  His GSoC journey & lessons
-→  Open source contribution strategies
-→  How to position yourself for tech opportunities
+Get ready to uncover insights about cracking Google Summer of Code, mastering open source, and building your path to top tech opportunities 🚀
 
 ------------------------------
 
-📅  EVENT DETAILS:
+🗓 EVENT DETAILS
 
-📅  Date:  31st October 2025
-🕝  Time:  2:30 PM
-📍  Venue: Online (Zoom)
-
-🔗  Register: https://codenexusvst.netlify.app/
+📅 Date: 31st October 2025
+🕝 Time: 2:30 PM (IST)
+📍 Venue: Online (Zoom)
 
 ------------------------------
 
-Organized by Code Nexus — bringing you conversations that matter.
+🔗 JOIN THE SESSION
 
-See you there!
+Zoom Link: https://us06web.zoom.us/j/82708913587?pwd=ExyFaoUCYtSOtC9lCphIawZFEhDUQz.1
+Meeting ID: 827 0891 3587
+Passcode: 000000
 
-Best regards,
-Code Nexus Team 💙
+👉 We recommend joining 5 minutes early to ensure a smooth start.
 
-🔗  STAY CONNECTED:
-📱  WhatsApp: https://whatsapp.com/channel/0029Vb6s2Jg4dTnTPNbgRE37
-💬  Community: https://chat.whatsapp.com/JUaHh3U8nKwGa8b8lDJUko
-🔗  LinkedIn: https://www.linkedin.com/in/code-nexus-323b32396/
-📸  Instagram: https://www.instagram.com/code_nexus_official/
+------------------------------
+
+🧭 WHAT YOU’LL LEARN
+
+→ Prathamesh’s GSoC journey & lessons learned
+→ Strategies for open source contributions
+→ Positioning yourself for tech opportunities
+
+------------------------------
+
+Organized by Code Nexus — bringing you conversations that matter. 💙
+
+See you at the session!
+
+Warm regards,
+Team Code Nexus
+
+------------------------------
+
+🌐 STAY CONNECTED
+
+📱 WhatsApp Channel: https://whatsapp.com/channel/0029Vb6s2Jg4dTnTPNbgRE37
+💬 Community Chat: https://chat.whatsapp.com/JUaHh3U8nKwGa8b8lDJUko
+🔗 LinkedIn: https://www.linkedin.com/in/code-nexus-323b32396/
+📸 Instagram: https://www.instagram.com/code_nexus_official/
 `.trim();
 }
 
