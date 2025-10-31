@@ -10,50 +10,59 @@
  */
 export function generateWelcomeEmail(name) {
   const greeting = name ? `Hi ${name},` : 'Hi there,';
+  const thankYou = name 
+    ? "Thank you for registering! We're excited to have you join us."
+    : "Thank you for registering! We're excited to have all of you join us.";
   
-  // Create beautifully formatted email
   return `${greeting}
 
-==============================
-🎉  WELCOME TO CODE NEXUS!  🎉
-==============================
+🎉 Congratulations! You’ve successfully registered for our exclusive GSoC Session with Prathamesh Sahasrabhojane (GSoC 2020 Alumni, now at Rippling).
 
-We're THRILLED to have you join our vibrant community of developers, learners, and tech enthusiasts!
-
-✨  WHAT AWAITS YOU:
-🚀  Workshops & tech sessions
-🤝  Networking opportunities
-💡  Learning resources
-🎯  Career guidance
-🔥  Hackathons & opportunities
+Get ready to uncover insights about cracking Google Summer of Code, mastering open source, and building your path to top tech opportunities 🚀
 
 ------------------------------
 
-🔗  STAY CONNECTED:
+🗓 EVENT DETAILS
 
-📱  WhatsApp Channel:
-   https://whatsapp.com/channel/0029Vb6s2Jg4dTnTPNbgRE37
-
-💬  WhatsApp Community:
-   https://chat.whatsapp.com/JUaHh3U8nKwGa8b8lDJUko
-
-🔗  LinkedIn:
-   https://www.linkedin.com/in/code-nexus-323b32396/
-
-📸  Instagram:
-   https://www.instagram.com/code_nexus_official/
+📅 Date: 31st October 2025
+🕝 Time: 2:30 PM (IST)
+📍 Venue: Online (Zoom)
 
 ------------------------------
 
-🎯  NEXT STEPS:
-1️⃣  Join our WhatsApp channels
-2️⃣  Follow us on social media
-3️⃣  Engage with the community
+🔗 JOIN THE SESSION
 
-Looking forward to seeing you THRIVE! 🌟
+Zoom Link: https://us06web.zoom.us/j/82708913587?pwd=ExyFaoUCYtSOtC9lCphIawZFEhDUQz.1
+Meeting ID: 827 0891 3587
+Passcode: 000000
+
+👉 We recommend joining 5 minutes early to ensure a smooth start.
+
+------------------------------
+
+🧭 WHAT YOU’LL LEARN
+
+→ Prathamesh’s GSoC journey & lessons learned
+→ Strategies for open source contributions
+→ Positioning yourself for tech opportunities
+
+------------------------------
+
+Organized by Code Nexus — bringing you conversations that matter. 💙
+
+See you at the session!
 
 Warm regards,
-Code Nexus Team 💙
+Team Code Nexus
+
+------------------------------
+
+🌐 STAY CONNECTED
+
+📱 WhatsApp Channel: https://whatsapp.com/channel/0029Vb6s2Jg4dTnTPNbgRE37
+💬 Community Chat: https://chat.whatsapp.com/JUaHh3U8nKwGa8b8lDJUko
+🔗 LinkedIn: https://www.linkedin.com/in/code-nexus-323b32396/
+📸 Instagram: https://www.instagram.com/code_nexus_official/
 `.trim();
 }
 
