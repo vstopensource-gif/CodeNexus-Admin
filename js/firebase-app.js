@@ -1,16 +1,16 @@
-// Firebase v9 modular initialization (ES modules)
-import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+// Firebase v9 modular initialization (CDN ES modules)
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js';
+import { getAuth, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 
 const firebaseConfig = {
-  apiKey: import.meta?.env?.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta?.env?.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta?.env?.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta?.env?.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta?.env?.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta?.env?.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta?.env?.VITE_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyBj-vPEk306lnMLsVtTFMC9G5W3cJr3MwA",
+  authDomain: "codenexus-b58ae.firebaseapp.com",
+  projectId: "codenexus-b58ae",
+  storageBucket: "codenexus-b58ae.appspot.com",
+  messagingSenderId: "454472605265",
+  appId: "1:454472605265:web:616082e4584842f1d5e270",
+  measurementId: "G-55M0FPM6JX"
 };
 
 export const app = initializeApp(firebaseConfig);

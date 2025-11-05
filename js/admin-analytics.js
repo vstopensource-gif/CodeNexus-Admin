@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
+import { collection, getDocs, query, where, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 import { db } from "./firebase-app.js";
 import { formatDate } from "./admin-utils.js";
 
