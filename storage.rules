@@ -1,0 +1,14 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'vstopensource@gmail.com';
+    }
+
+    // Lock down all files to the admin only
+    match /{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
+
