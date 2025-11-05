@@ -1,0 +1,90 @@
+[debug] [2025-10-30T21:44:41.727Z] ----------------------------------------------------------------------
+[debug] [2025-10-30T21:44:41.730Z] Command:       /opt/homebrew/Cellar/node/24.8.0/bin/node /opt/homebrew/bin/firebase init
+[debug] [2025-10-30T21:44:41.730Z] CLI Version:   14.17.0
+[debug] [2025-10-30T21:44:41.730Z] Platform:      darwin
+[debug] [2025-10-30T21:44:41.730Z] Node Version:  v24.8.0
+[debug] [2025-10-30T21:44:41.730Z] Time:          Fri Oct 31 2025 03:14:41 GMT+0530 (India Standard Time)
+[debug] [2025-10-30T21:44:41.730Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-30T21:44:41.735Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-30T21:44:41.735Z] > authorizing via signed-in user (vstopensource@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/sidhant/Desktop/Codenexus/CodeNexus-Admin
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-10-30T21:46:08.281Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:08.282Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:08.283Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2025-10-30T21:46:09.299Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-10-30T21:46:09.299Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project codenexus-b58ae (Codenexus) 
+[info] 
+=== Dataconnect Setup
+[debug] [2025-10-30T21:46:13.045Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:13.045Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:13.045Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/codenexus-b58ae/billingInfo [none]
+[debug] [2025-10-30T21:46:14.615Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/codenexus-b58ae/billingInfo 200
+[debug] [2025-10-30T21:46:14.616Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/codenexus-b58ae/billingInfo {"name":"projects/codenexus-b58ae/billingInfo","projectId":"codenexus-b58ae","billingAccountName":"billingAccounts/01D2B1-183A21-9C0348","billingEnabled":true}
+[info] i  dataconnect: ensuring required API firebasedataconnect.googleapis.com is enabled... 
+[debug] [2025-10-30T21:46:14.617Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:14.617Z] Checked if tokens are valid: true, expires at: 1761864225695
+[info] i  dataconnect: ensuring required API sqladmin.googleapis.com is enabled... 
+[debug] [2025-10-30T21:46:14.618Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:14.618Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:14.618Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-10-30T21:46:14.618Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/codenexus-b58ae
+[debug] [2025-10-30T21:46:14.619Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com [none]
+[debug] [2025-10-30T21:46:14.619Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com x-goog-quota-user=projects/codenexus-b58ae
+[debug] [2025-10-30T21:46:16.526Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-10-30T21:46:16.527Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com [omitted]
+[warn] ⚠  dataconnect: missing required API firebasedataconnect.googleapis.com. Enabling now... 
+[debug] [2025-10-30T21:46:16.527Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:16.527Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:16.528Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com:enable [none]
+[debug] [2025-10-30T21:46:16.528Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com:enable x-goog-quota-user=projects/codenexus-b58ae
+[debug] [2025-10-30T21:46:16.538Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com 200
+[debug] [2025-10-30T21:46:16.538Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com [omitted]
+[warn] ⚠  dataconnect: missing required API sqladmin.googleapis.com. Enabling now... 
+[debug] [2025-10-30T21:46:16.538Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:16.538Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:16.538Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com:enable [none]
+[debug] [2025-10-30T21:46:16.538Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com:enable x-goog-quota-user=projects/codenexus-b58ae
+[debug] [2025-10-30T21:46:18.288Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com:enable 200
+[debug] [2025-10-30T21:46:18.288Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/firebasedataconnect.googleapis.com:enable [omitted]
+[debug] [2025-10-30T21:46:18.335Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com:enable 200
+[debug] [2025-10-30T21:46:18.335Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/codenexus-b58ae/services/sqladmin.googleapis.com:enable [omitted]
+[debug] [2025-10-30T21:46:28.344Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:28.344Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:46:28.345Z] >>> [apiv2][query] GET https://firebasedataconnect.googleapis.com/v1/projects/codenexus-b58ae/locations/-/services [none]
+[debug] [2025-10-30T21:46:30.467Z] <<< [apiv2][status] GET https://firebasedataconnect.googleapis.com/v1/projects/codenexus-b58ae/locations/-/services 200
+[debug] [2025-10-30T21:46:30.467Z] <<< [apiv2][body] GET https://firebasedataconnect.googleapis.com/v1/projects/codenexus-b58ae/locations/-/services {}
+[debug] [2025-10-30T21:47:03.593Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:47:03.593Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:47:03.593Z] >>> [apiv2][query] GET https://sqladmin.googleapis.com/v1/projects/codenexus-b58ae/instances [none]
+[debug] [2025-10-30T21:47:04.819Z] <<< [apiv2][status] GET https://sqladmin.googleapis.com/v1/projects/codenexus-b58ae/instances 200
+[debug] [2025-10-30T21:47:04.820Z] <<< [apiv2][body] GET https://sqladmin.googleapis.com/v1/projects/codenexus-b58ae/instances {}
+[debug] [2025-10-30T21:47:04.820Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:47:04.820Z] Checked if tokens are valid: true, expires at: 1761864225695
+[debug] [2025-10-30T21:47:04.820Z] >>> [apiv2][query] GET https://firebasedataconnect.googleapis.com/v1/projects/codenexus-b58ae/locations [none]
+[debug] [2025-10-30T21:47:06.618Z] <<< [apiv2][status] GET https://firebasedataconnect.googleapis.com/v1/projects/codenexus-b58ae/locations 200
+[debug] [2025-10-30T21:47:06.618Z] <<< [apiv2][body] GET https://firebasedataconnect.googleapis.com/v1/projects/codenexus-b58ae/locations {"locations":[{"name":"projects/codenexus-b58ae/locations/asia-east1","locationId":"asia-east1","displayName":"Taiwan"},{"name":"projects/codenexus-b58ae/locations/asia-east2","locationId":"asia-east2","displayName":"Hong Kong"},{"name":"projects/codenexus-b58ae/locations/asia-northeast1","locationId":"asia-northeast1","displayName":"Tokyo"},{"name":"projects/codenexus-b58ae/locations/asia-northeast2","locationId":"asia-northeast2","displayName":"Osaka"},{"name":"projects/codenexus-b58ae/locations/asia-northeast3","locationId":"asia-northeast3","displayName":"Seoul"},{"name":"projects/codenexus-b58ae/locations/asia-south1","locationId":"asia-south1","displayName":"Mumbai"},{"name":"projects/codenexus-b58ae/locations/asia-southeast1","locationId":"asia-southeast1","displayName":"Singapore"},{"name":"projects/codenexus-b58ae/locations/asia-southeast2","locationId":"asia-southeast2","displayName":"Jakarta"},{"name":"projects/codenexus-b58ae/locations/australia-southeast1","locationId":"australia-southeast1","displayName":"Sydney"},{"name":"projects/codenexus-b58ae/locations/australia-southeast2","locationId":"australia-southeast2","displayName":"Melbourne"},{"name":"projects/codenexus-b58ae/locations/europe-central2","locationId":"europe-central2","displayName":"Warsaw"},{"name":"projects/codenexus-b58ae/locations/europe-north1","locationId":"europe-north1","displayName":"Finland"},{"name":"projects/codenexus-b58ae/locations/europe-southwest1","locationId":"europe-southwest1","displayName":"Madrid"},{"name":"projects/codenexus-b58ae/locations/europe-west1","locationId":"europe-west1","displayName":"Belgium"},{"name":"projects/codenexus-b58ae/locations/europe-west2","locationId":"europe-west2","displayName":"London"},{"name":"projects/codenexus-b58ae/locations/europe-west3","locationId":"europe-west3","displayName":"Frankfurt"},{"name":"projects/codenexus-b58ae/locations/europe-west4","locationId":"europe-west4","displayName":"Netherlands"},{"name":"projects/codenexus-b58ae/locations/europe-west6","locationId":"europe-west6","displayName":"Zurich"},{"name":"projects/codenexus-b58ae/locations/europe-west8","locationId":"europe-west8","displayName":"Milan"},{"name":"projects/codenexus-b58ae/locations/europe-west9","locationId":"europe-west9","displayName":"Paris"},{"name":"projects/codenexus-b58ae/locations/me-west1","locationId":"me-west1","displayName":"Tel Aviv"},{"name":"projects/codenexus-b58ae/locations/northamerica-northeast1","locationId":"northamerica-northeast1","displayName":"Montréal"},{"name":"projects/codenexus-b58ae/locations/northamerica-northeast2","locationId":"northamerica-northeast2","displayName":"Toronto"},{"name":"projects/codenexus-b58ae/locations/southamerica-east1","locationId":"southamerica-east1","displayName":"São Paulo"},{"name":"projects/codenexus-b58ae/locations/southamerica-west1","locationId":"southamerica-west1","displayName":"Santiago"},{"name":"projects/codenexus-b58ae/locations/us-central1","locationId":"us-central1","displayName":"Iowa"},{"name":"projects/codenexus-b58ae/locations/us-east1","locationId":"us-east1","displayName":"South Carolina"},{"name":"projects/codenexus-b58ae/locations/us-east4","locationId":"us-east4","displayName":"Northern Virginia"},{"name":"projects/codenexus-b58ae/locations/us-south1","locationId":"us-south1","displayName":"Dallas"},{"name":"projects/codenexus-b58ae/locations/us-west1","locationId":"us-west1","displayName":"Oregon"},{"name":"projects/codenexus-b58ae/locations/us-west2","locationId":"us-west2","displayName":"Los Angeles"},{"name":"projects/codenexus-b58ae/locations/us-west3","locationId":"us-west3","displayName":"Salt Lake City"},{"name":"projects/codenexus-b58ae/locations/us-west4","locationId":"us-west4","displayName":"Las Vegas"}]}
+[debug] [2025-10-30T21:50:01.436Z] Error: Timed out.
+    at Timeout._onTimeout (/opt/homebrew/lib/node_modules/firebase-tools/lib/utils.js:275:49)
+    at listOnTimeout (node:internal/timers:608:17)
+    at process.processTimers (node:internal/timers:543:7)
+[error] 
+[error] Error: An unexpected error has occurred.

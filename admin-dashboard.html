@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard • Code-Nexus</title>
+  <link rel="stylesheet" href="css/admin-dashboard.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="header-title">
+          <h1>Code-Nexus Admin Dashboard</h1>
+          <p class="header-subtitle">Welcome back!</p>
+        </div>
+        <div class="header-actions">
+          <div class="admin-info">
+            <span class="admin-avatar">👤</span>
+            <span id="admin-name">Admin</span>
+          </div>
+          <button id="logout-btn" class="btn-logout">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <section class="dashboard-content">
+        <div class="page-nav">
+          <a href="admin-dashboard.html" class="nav-link active">📊 Overview</a>
+          <a href="admin-users.html" class="nav-link">👥 Users</a>
+          <a href="admin-registrations.html" class="nav-link">📝 Registrations</a>
+        </div>
+
+        <div class="overview-section">
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+            <button id="refresh-overview" class="btn-refresh" title="Refresh data (clears cache)">🔄 Refresh</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card stat-primary">
+              <div class="stat-icon">👥</div>
+              <div class="stat-content">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value" id="stat-total-users">-</div>
+                <div class="stat-change" id="stat-users-change">-</div>
+              </div>
+            </div>
+
+            <div class="stat-card stat-success">
+              <div class="stat-icon">📝</div>
+              <div class="stat-content">
+                <div class="stat-label">Total Registrations</div>
+                <div class="stat-value" id="stat-total-registrations">-</div>
+                <div class="stat-change" id="stat-registrations-change">-</div>
+              </div>
+            </div>
+
+            <div class="stat-card stat-info">
+              <div class="stat-icon">📅</div>
+              <div class="stat-content">
+                <div class="stat-label">Today's Registrations</div>
+                <div class="stat-value" id="stat-today-registrations">-</div>
+                <div class="stat-change" id="stat-today-change">-</div>
+              </div>
+            </div>
+
+            <div class="stat-card stat-warning">
+              <div class="stat-icon">⭐</div>
+              <div class="stat-content">
+                <div class="stat-label">New Users Today</div>
+                <div class="stat-value" id="stat-new-users">-</div>
+                <div class="stat-change" id="stat-new-users-change">-</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="overview-cards">
+            <div class="card">
+              <div class="card-header">
+                <h3>📊 Quick Stats</h3>
+              </div>
+              <div class="card-body">
+                <div class="quick-stats">
+                  <div class="quick-stat-item">
+                    <span class="quick-stat-label">Active Events</span>
+                    <span class="quick-stat-value" id="quick-active-events">-</span>
+                  </div>
+                  <div class="quick-stat-item">
+                    <span class="quick-stat-label">Top College</span>
+                    <span class="quick-stat-value" id="quick-top-college">-</span>
+                  </div>
+                  <div class="quick-stat-item">
+                    <span class="quick-stat-label">Avg per Day</span>
+                    <span class="quick-stat-value" id="quick-avg-per-day">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>📈 Recent Activity</h3>
+              </div>
+              <div class="card-body">
+                <div id="recent-activity" class="recent-activity">
+                  <p class="loading-text">Loading recent activity...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { requireAdmin, signOut } from './js/auth-guard.js';
+    import './js/dashboard-overview.js';
+
+    requireAdmin().then((user) => {
+      const nameEl = document.getElementById('admin-name');
+      if (nameEl) nameEl.textContent = user.displayName || user.email;
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) logoutBtn.addEventListener('click', signOut);
+    });
+  </script>
+</body>
+</html>
