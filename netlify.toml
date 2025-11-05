@@ -1,7 +1,5 @@
 # Redirect root to login page
 [[redirects]]
-# Redirect root to login page
-[[redirects]]
   from = "/"
   to = "/admin-login.html"
   status = 301
@@ -33,7 +31,7 @@
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
     Cross-Origin-Opener-Policy = "same-origin-allow-popups"
     # Allow Firebase/GSI scripts and network calls
-    Content-Security-Policy = "default-src 'self' https:; script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.gstatic.com https://apis.google.com; frame-src 'self' https://accounts.google.com https://apis.google.com https://codenexus-b58ae.firebaseapp.com https://*.firebaseapp.com https://www.gstatic.com;"
+    Content-Security-Policy = "default-src 'self' https:; script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.gstatic.com https://apis.google.com; frame-src 'self' https://accounts.google.com https://apis.google.com https://codenexus-b58ae.firebaseapp.com https://*.firebaseapp.com https://www.gstatic.com https://app.netlify.com;"
 
 [build]
   command = "npm run build"
